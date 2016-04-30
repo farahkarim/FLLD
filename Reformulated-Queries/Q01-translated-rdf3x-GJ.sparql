@@ -1,0 +1,23 @@
+SELECT DISTINCT ?sensor ?value ?uom
+WHERE {
+{
+
+{?observation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#procedure> ?sensor .
+?observation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#RainfallObservation> .
+?observation <http://linkeddata.com/ontology#hasResult> ?result .
+FILTER (!regex(str(?observation),'http://linkeddata.com/ontology#','i'))}
+UNION
+{?observation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#procedure> ?sensor .
+?observation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#RainfallObservation> .
+?observation <http://linkeddata.com/ontology#hasResult> ?result .
+?observation <http://linkeddata.com/ontology#hasOrder> ?obsorder .
+?obsorder ?p ?obselement .
+FILTER (?p != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> )}
+
+}
+GJOIN
+{?result <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?value .
+?result <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#uom> ?uom .}
+
+}
+

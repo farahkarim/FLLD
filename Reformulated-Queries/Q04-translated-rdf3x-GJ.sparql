@@ -1,0 +1,43 @@
+SELECT DISTINCT ?sensor
+WHERE {
+{
+{{?temperatureObservation  <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#procedure> ?sensor .
+?temperatureObservation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#TemperatureObservation> .
+?temperatureObservation <http://linkeddata.com/ontology#hasResult> ?temperatureResult .
+FILTER (!regex(str(?temperatureObservation),'http://linkeddata.com/ontology#','i')) }
+GJOIN
+{?temperatureResult <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?temperature .
+?temperatureResult <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#uom> ?uom .
+FILTER(?temperature > "32"^^<http://www.w3.org/2001/XMLSchema#float>)}}
+GJOIN
+{?windSpeedObservation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#procedure> ?sensor .
+?windSpeedObservation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#WindSpeedObservation> .
+?windSpeedObservation <http://linkeddata.com/ontology#hasResult> [ <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?windSpeed ]  
+FILTER (!regex(str(?windSpeedObservation),'http://linkeddata.com/ontology#','i')) }
+}
+UNION
+{
+{{?temperatureObservationBN  <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#procedure> ?sensor .
+?temperatureObservationBN <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#TemperatureObservation> .
+?temperatureObservationBN <http://linkeddata.com/ontology#hasResult> ?temperatureResult .
+?temperatureObservationBN <http://linkeddata.com/ontology#hasOrder> ?temporder .
+?temporder ?p1 ?temperatureObservation .
+FILTER (?p1 != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> )
+}
+GJOIN
+{?temperatureResult <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?temperature .
+?temperatureResult <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#uom> ?uom .
+FILTER(?temperature > "32"^^<http://www.w3.org/2001/XMLSchema#float>)
+}}
+GJOIN
+{?windSpeedObservationBN <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#procedure> ?sensor .
+?windSpeedObservationBN <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#WindSpeedObservation> .
+?windSpeedObservationBN <http://linkeddata.com/ontology#hasResult> [ <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?windSpeed ]  
+?windSpeedObservationBN <http://linkeddata.com/ontology#hasOrder> ?windspeedorder .
+?windspeedorder ?p2 ?windspeedObservation .
+FILTER (?p2 != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> )
+}
+}
+}
+
+

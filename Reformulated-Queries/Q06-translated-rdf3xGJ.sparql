@@ -1,0 +1,50 @@
+SELECT ?sensor
+WHERE {
+{
+{?observation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#procedure> ?sensor .
+FILTER (!regex(str(?observation),'http://linkeddata.com/ontology#','i'))
+}
+GJOIN
+{
+ { 
+?observation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#VisibilityObservation> .
+?observation <http://linkeddata.com/ontology#hasResult> [<http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?value ] .
+    FILTER ( ?value < "10"^^<http://www.w3.org/2001/XMLSchema#float>)
+}
+ UNION
+ {
+?observation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#RainfallObservation> .
+?observation <http://linkeddata.com/ontology#hasResult> [<http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?value ] .
+    FILTER ( ?value > "30"^^<http://www.w3.org/2001/XMLSchema#float>)}
+UNION
+{
+?observation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#SnowfallObservation> .}
+}
+}
+UNION
+{
+{?observation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#procedure> ?sensor .
+?observation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#VisibilityObservation> .
+?observation <http://linkeddata.com/ontology#hasOrder> ?obsorder1 . 
+?observation <http://linkeddata.com/ontology#hasResult> [<http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?value ] .
+   FILTER ( ?value < "10"^^<http://www.w3.org/2001/XMLSchema#float>)
+?obsorder1 ?p1 ?obselement1 .
+  FILTER ( ?p1 != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> )}
+UNION
+{
+?observation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#procedure> ?sensor .
+?observation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#RainfallObservation> .
+?observation <http://linkeddata.com/ontology#hasOrder> ?obsorder2 . 
+?observation <http://linkeddata.com/ontology#hasResult> [<http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?value ] .
+    FILTER ( ?value > "30"^^<http://www.w3.org/2001/XMLSchema#float>)
+?obsorder2 ?p2 ?obselement2 .
+  FILTER ( ?p2 != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> )}
+UNION
+{?observation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#procedure> ?sensor .
+?observation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#SnowfallObservation> .
+?observation <http://linkeddata.com/ontology#hasOrder> ?obsorder3 . 
+?obsorder3 ?p3 ?obselement3 .
+FILTER ( ?p3 != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> )}
+}
+}
+

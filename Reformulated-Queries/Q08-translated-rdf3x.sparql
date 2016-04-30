@@ -1,0 +1,24 @@
+SELECT DISTINCT ?temperature
+WHERE {
+{?sensor <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#processLocation> ?sensorLocation .
+?sensor <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#generatedObservation> ?observation .
+FILTER (!regex(str(?observation),'http://linkeddata.com/ontology#','i'))
+?sensorLocation <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "43.53260"^^<http://www.w3.org/2001/XMLSchema#float> .
+?sensorLocation <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-112.94775"^^<http://www.w3.org/2001/XMLSchema#float> .
+?observation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#observedProperty> <http://knoesis.wright.edu/ssw/ont/weather.owl#_AirTemperature> .
+?observation <http://linkeddata.com/ontology#hasResult> [ <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?temperature ] .
+}
+UNION
+{
+?sensor <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#processLocation> ?sensorLocation .
+?sensor <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#generatedObservation> ?observation.
+?sensorLocation <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "43.53260"^^<http://www.w3.org/2001/XMLSchema#float> .
+?sensorLocation <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-112.94775"^^<http://www.w3.org/2001/XMLSchema#float> .
+?observation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#observedProperty> <http://knoesis.wright.edu/ssw/ont/weather.owl#_AirTemperature> .
+?observation <http://linkeddata.com/ontology#hasResult> [ <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?temperature ] .
+?observation <http://linkeddata.com/ontology#hasOrder> ?obsorder .
+?obsorder ?p ?obselements .
+FILTER ( ?p != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> )
+}
+}
+

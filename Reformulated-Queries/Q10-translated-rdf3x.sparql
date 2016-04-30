@@ -1,0 +1,14 @@
+SELECT DISTINCT ?lat ?long ?alt
+WHERE {
+?sensor <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#generatedObservation> [<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://knoesis.wright.edu/ssw/ont/weather.owl#SnowfallObservation>] .
+?sensor <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#processLocation> ?sensorLocation .
+?sensorLocation <http://www.w3.org/2003/01/geo/wgs84_pos#alt> ?alt .
+?sensorLocation <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat .
+?sensorLocation <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?long .
+}
+
+
+
+
+
+

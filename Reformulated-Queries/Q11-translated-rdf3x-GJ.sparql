@@ -1,0 +1,62 @@
+SELECT DISTINCT ?sensor
+WHERE {
+{
+{?sensor  <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#hasLocatedNearRel> [<http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#hasLocation> ?nearbyLocation] .}
+GJOIN
+{
+{?sensor <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#generatedObservation> ?observation . }
+
+GJOIN
+{?observation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?observationType . 
+?observation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#observedProperty> ?observationProperty .
+?observation <http://linkeddata.com/ontology#hasResult> [ <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?value ] .
+FILTER ( !regex(str(?observation),'http://linkeddata.com/ontology#','i')) }
+}
+}
+UNION 
+{
+{?sensor2 <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#hasLocatedNearRel> [<http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#hasLocation> ?nearbyLcation2] .
+FILTER ( sameTerm(?nearbyLocation, ?nearbyLocation2) ) }
+GJOIN
+{
+{?sensor2  <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#generatedObservation> ?observation2 . }
+GJOIN
+{?observation2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?observationType .
+?observation2 <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#observedProperty> ?observationProperty .
+?observation2 <http://linkeddata.com/ontology#hasResult> [ <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?value2 ] .
+FILTER ( !regex(str(?observation2),'http://linkeddata.com/ontology#','i')) }
+}
+}
+UNION
+{
+{
+{?sensor  <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#hasLocatedNearRel> [<http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#hasLocation> ?nearbyLocation] . }
+GJOIN
+{
+{?sensor <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#generatedObservation> ?observation . }
+GJOIN
+{?observation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?observationType . 
+?observation <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#observedProperty> ?observationProperty .
+?observation <http://linkeddata.com/ontology#hasResult> [ <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?value ] .
+?observation <http://linkeddata.com/ontology#hasOrder> ?obsorder .
+?obsorder ?p ?obselements .
+FILTER ( ?p != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ) }
+}
+}
+UNION 
+{
+{?sensor2 <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#hasLocatedNearRel> [<http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#hasLocation> ?nearbyLcation2] .
+FILTER ( sameTerm(?nearbyLocation, ?nearbyLocation2) ) }
+GJOIN
+{
+{?sensor2  <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#generatedObservation> ?observation2 . }
+GJOIN
+{?observation2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?observationType .
+?observation2 <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#observedProperty> ?observationProperty .
+?observation2 <http://linkeddata.com/ontology#hasResult> [ <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#floatValue> ?value2 ] .
+?observation2 <http://linkeddata.com/ontology#hasOrder> ?obs2order .
+?obs2order ?p2 ?obs2elements .
+FILTER ( ?p2 != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ) }
+}
+}
+}

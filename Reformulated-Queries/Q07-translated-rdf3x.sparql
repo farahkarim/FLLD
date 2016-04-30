@@ -1,0 +1,14 @@
+SELECT DISTINCT ?sensor
+WHERE {
+{?sensor <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#generatedObservation> ?observation .
+FILTER (!regex(str(?observation),'http://linkeddata.com/ontology#','i'))
+}
+UNION
+{
+?sensor <http://knoesis.wright.edu/ssw/ont/sensor-observation.owl#generatedObservation> ?observation .
+?observation <http://linkeddata.com/ontology#hasOrder> ?obsorder .
+?obsorder ?p ?observationelements .
+FILTER ( ?p != <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ) 
+}
+}
+
