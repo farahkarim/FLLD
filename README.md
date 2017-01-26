@@ -1,7 +1,7 @@
 FLLD
 ========
 
-FLLD is a factorization technique that generates compact representation of longitudinal linked data observations and facilitates SPARQL query execution against factorized datasets. 
+FLLD is a factorization technique that generates compact representation of longitudinal linked data observations and facilitates SPARQL query execution against the factorized datasets. 
 
 Following are provided here
  
